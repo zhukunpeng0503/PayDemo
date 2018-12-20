@@ -1,0 +1,24 @@
+ext.versions = [
+        'compileSdk'             : 26,
+        'minSdk'                 : 14,
+        'targetSdk'              : 23,
+        'sourceCompatibility'    : JavaVersion.VERSION_1_8,
+        'targetCompatibility'    : JavaVersion.VERSION_1_8,
+        'sourceCompatibilityJava': "1.8",
+        'targetCompatibilityJava': "1.8",
+        'supportLib'             : '26.+',
+        'supportAppcompat'       : '26.+',
+        'supportDesign'          : '26.+',
+]
+
+ext.deps = [
+        androidPlugin: 'com.android.tools.build:gradle:3.1.2',
+        //supportLib      : "com.android.support:support-v4:${versions.supportLib}",
+        supportLib   : "com.android.support:appcompat-v7:${versions.supportLib}",
+        supportDesign: "com.android.support:design:${versions.supportLib}",
+        recyclerview : "com.android.support:recyclerview-v7:${versions.supportLib}",
+        junit        : "junit:junit:4.12",
+        constraint   : "com.android.support.constraint:constraint-layout:1.1.0",
+        testRunner   : "com.android.support.test:runner:1.0.1",
+        testEspresso : "com.android.support.test.espresso:espresso-core:3.0.1"
+]

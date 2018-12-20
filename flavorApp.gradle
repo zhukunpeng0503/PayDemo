@@ -1,0 +1,31 @@
+android {
+
+    flavorDimensions "app"
+    productFlavors {
+//    dcpay {
+//        manifestPlaceholders = [
+//                JPUSH_PKGNAME : "com.mbr.dcpay",
+//                JPUSH_APPKEY : "10a35f63ab74850a7d29bce4", //JPush上注册的包名对应的appkey.
+//                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+//        ]
+//    }
+//    10a35f63ab74850a7d29bce4
+        cospay {
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME: "com.mbr.dcpay",
+                    JPUSH_APPKEY : "d62d4740a02ec4aff07c194f", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+            ]
+        }
+    }
+
+//    variantFilter { variant ->
+//        def names = variant.flavors*.name
+//        // To check for a certain build type, use variant.buildType.name == "<buildType>"
+//        if (names.contains("heropay") && names.contains("debug")) {
+//            // Gradle ignores any variants that satisfy the conditions above.
+//            setIgnore(true)
+//        }
+//    }
+
+}
