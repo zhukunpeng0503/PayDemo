@@ -49,14 +49,14 @@ public class MainActivity extends Activity {
     protected Map<String, List<String>> mHeadMap;
 
     // 模拟应用后台返回签名好的订单信息（实际功能由你们的后台服务器实现）
-//    private static final String URL_PREPAY = "http://192.168.1.223:8101/dcpayCore/payBills/prepay";
-    private static final String URL_PREPAY = "http://47.52.175.22/dcpayCore/payBills/prepay";
+    private static final String URL_PREPAY = "http://192.168.1.223:8101/dcpayCore/payBills/prepay";
+    //    private static final String URL_PREPAY = "http://47.52.175.22/dcpayCore/payBills/prepay";
     private View button1;
     private String headerString;
     private HashMap<String, Object> bodyEncryptMap;
     private Map<String, String> myMap;
     private Device device;
-    private int i = 1;
+    private int num = (int) (Math.random() * 8998) + 1000 + 1;
 
     private static final String KEY_BUNDLE = "PAY_REQUEST_PARAMS";
     private static final String KEY_BUNDLE_CALLBACK_NAME = "n";
@@ -103,7 +103,7 @@ public class MainActivity extends Activity {
         myMap.put("goodsTag", "coin");
         myMap.put("goodsType", "ETH");
         myMap.put("industry", "fubt");
-        myMap.put("refBizNo", "00000000008" + i);
+        myMap.put("refBizNo", "0000008" + num);
 
         mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -205,6 +205,7 @@ public class MainActivity extends Activity {
     /**
      * 携带订单信息
      * 跳转到钱包APP
+     *
      * @param orderInfo
      */
     private void callPaySdk(String orderInfo) {
