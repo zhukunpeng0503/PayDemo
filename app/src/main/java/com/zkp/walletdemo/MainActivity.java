@@ -7,11 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.NetworkRequest;
 import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,24 +17,19 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zkp.walletdemo.platform.Base64Comp;
 import com.zkp.walletdemo.rsa.DCPEncryptor;
 import com.zkp.walletdemo.utils.OnLazyClickListener;
-import com.zkp.walletdemo.utils.network.Get;
 import com.zkp.walletdemo.utils.network.NetResult;
 import com.zkp.walletdemo.utils.network.Post;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
