@@ -11,5 +11,5 @@ public class ProtocolConfigSeparate {
     public static String mbr_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnQk41XLC0CPcFHGjU2iDCBq0+8QXl7K+zURmd9URq/pmRxG/Bhz62kg07WHGwysf/iG/wvQc/C+Su/ZmwEtevXX7YAZwpITwnDPANQtXqIljAuMteojjmt0jiJWYdZXed4V+wIZTOgXBethzuhzDWBg+jeGAFhBUWgF9LhCtZbpTvI2daVRMACauDZsDSvp3Dujc+ju94ixwNImshdTX9yhBBQncWJQsOCQpVAx1VFCN3oo8crRtdx7PaISeYGshtyRTEvAeaNqcRezxmypoy4W2GKdqI3VJc1uWNrcolXny1mQMIFte/GTQIppaQCIZ0R8lRHhQFzCZEawE/dDAqwIDAQAB";
 
     public static String merchant_id = "10000000000003";// 商户号
-    public static String channel = "73088886094001";
+    public static String channel = "73088886094001";//商户chennel
 }
