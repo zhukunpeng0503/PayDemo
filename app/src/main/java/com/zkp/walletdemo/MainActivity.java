@@ -48,14 +48,15 @@ public class MainActivity extends Activity {
     protected Context appContext;
     protected Map<String, List<String>> mHeadMap;
 
-    // 模拟应用后台返回签名好的订单信息（实际功能由你们的后台服务器实现）
-    private static final String URL_PREPAY = "http://192.168.1.223:8101/dcpayCore/payBills/prepay";
-    //    private static final String URL_PREPAY = "http://47.52.175.22/dcpayCore/payBills/prepay";
+    // 模拟应用后台返回签名好的订单信息（实际功能由你们的后台服务器实现）请求接口
+//    private static final String URL_PREPAY = "http://192.168.1.223:8101/dcpayCore/payBills/prepay";
+    private static final String URL_PREPAY = "http://47.52.175.22/dcpayCore/payBills/prepay";
     private View button1;
     private String headerString;
     private HashMap<String, Object> bodyEncryptMap;
     private Map<String, String> myMap;
     private Device device;
+    //订单号随机号
     private int num = (int) (Math.random() * 8998) + 1000 + 1;
 
     private static final String KEY_BUNDLE = "PAY_REQUEST_PARAMS";
@@ -74,6 +75,7 @@ public class MainActivity extends Activity {
         button1.setOnClickListener(new OnLazyClickListener() {
             @Override
             public void onLazyClick(View view) {
+                num = (int) (Math.random() * 8998) + 1000 + 1;
                 pay(); // 开始支付
             }
         });
@@ -89,12 +91,13 @@ public class MainActivity extends Activity {
         preTask = new PrePayTask();
         preTask.execute();
     }
-
+    //请求参数的封装
     public String postString() {
         return Object2Json.map2Json(post());
     }
 
     public HashMap<String, Object> post() {
+        //请求参数 存到hashMap中
 
         myMap = new HashMap<>();
         myMap.put("amount", "1");
@@ -107,10 +110,12 @@ public class MainActivity extends Activity {
 
         mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
+        //请求头部header
 
         try {
-            HashMap<String, Object> bodyEncryptMap = DCPEncryptor.encrypt(mapper.writeValueAsString(myMap), ProtocolConfigSeparate.mbr_public_key, ProtocolConfigSeparate.private_key);
+            HashMap<String, Object> bodyEncryptMap = DCPEncryptor.encrypt(mapper.writeValueAsString(myMap),
+                    ProtocolConfigSeparate.mbr_public_key,
+                    ProtocolConfigSeparate.private_key);
             device = new Device();
             device.deviceId = getAndroidId(this);
             device.appVersion = getVersionName(this);
@@ -119,7 +124,7 @@ public class MainActivity extends Activity {
             device.language = "zh_cn";
             device.packageName = getPackageName(this);
             device.channel = ProtocolConfigSeparate.channel;
-
+            // 头部header 参数赋值
             Header header = new Header();
             header.setDevice(device);
             header.setSignType("RSA2");
@@ -222,7 +227,7 @@ public class MainActivity extends Activity {
 
     private void initViews() {
         button1 = findViewById(R.id.include1);
-
+        //请求头部的封装
         mHeadMap = new HashMap<>();
         mHeadMap.put("Accept", new ArrayList<String>(Arrays.asList("application/json")));
         mHeadMap.put("Content-Type", new ArrayList<String>(Arrays.asList("application/json")));
