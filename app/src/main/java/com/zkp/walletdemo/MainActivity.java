@@ -67,6 +67,7 @@ public class MainActivity extends Activity {
     private static final String KEY_BUNDLE_CALLBACK_NAME = "n";
     private EditText et_remark;
     private TextView tv_number;
+    private EditText et_amount;
 
 
     @Override
@@ -82,11 +83,17 @@ public class MainActivity extends Activity {
             @Override
             public void onLazyClick(View view) {
                 num = (int) (Math.random() * 8998) + 1000 + 1;
+                if (TextUtils.isEmpty(et_amount.getText().toString())) {
+                    Toast.makeText(MainActivity.this, "请输入数量!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (TextUtils.isEmpty(et_remark.getText().toString())) {
                     Toast.makeText(MainActivity.this, "请添加备注", Toast.LENGTH_SHORT).show();
-                } else {
-                    pay(); // 开始支付
+                    return;
                 }
+                pay(); // 开始支付
+
             }
         });
     }
@@ -110,7 +117,7 @@ public class MainActivity extends Activity {
     public HashMap<String, Object> post() {
         //请求参数 存到hashMap中
         myMap = new HashMap<>();
-        myMap.put("amount", "1");
+        myMap.put("amount", et_amount.getText().toString());
         myMap.put("attach", et_remark.getText().toString());
         myMap.put("coinId", "34190899187000");
         myMap.put("goodsTag", "coin");
@@ -240,6 +247,7 @@ public class MainActivity extends Activity {
         et_remark = findViewById(R.id.et_remark);
         tv_number = findViewById(R.id.tv_number);
         tv_number.setText("0000008" + num);
+        et_amount = findViewById(R.id.et_amount);
 
         button1 = findViewById(R.id.include1);
         //请求头部的封装
