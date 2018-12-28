@@ -11,18 +11,63 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
         android:gravity="center"
         android:text="@string/app_name"
-        android:textColor="#000000"
+        android:textColor="#666666"
         android:textSize="18sp" />
 
-    <include
-        android:id="@+id/include1"
-        layout="@layout/item_pay"
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp"
+        android:text="订单编号:"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_number"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/item_shape"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:textColor="#666666"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text="备注:"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/et_remark"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/item_shape"
+        android:hint="请输入备注"
+        android:paddingLeft="5dp"
+        android:textColor="#666666"
+        android:textColorHint="#999999"
+        android:textSize="14sp" />
+
+
+    <Button
+        android:id="@+id/include1"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/item_bg"
+        android:text="去支付"
+        android:textColor="#ffffff" />
 
 
 </LinearLayout>

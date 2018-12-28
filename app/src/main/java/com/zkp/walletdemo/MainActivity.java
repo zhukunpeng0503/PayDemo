@@ -3,6 +3,7 @@ package com.zkp.walletdemo;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -11,12 +12,15 @@ import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -61,6 +65,8 @@ public class MainActivity extends Activity {
 
     private static final String KEY_BUNDLE = "PAY_REQUEST_PARAMS";
     private static final String KEY_BUNDLE_CALLBACK_NAME = "n";
+    private EditText et_remark;
+    private TextView tv_number;
 
 
     @Override
@@ -76,7 +82,11 @@ public class MainActivity extends Activity {
             @Override
             public void onLazyClick(View view) {
                 num = (int) (Math.random() * 8998) + 1000 + 1;
-                pay(); // 开始支付
+                if (TextUtils.isEmpty(et_remark.getText().toString())) {
+                    Toast.makeText(MainActivity.this, "请添加备注", Toast.LENGTH_SHORT).show();
+                } else {
+                    pay(); // 开始支付
+                }
             }
         });
     }
@@ -91,6 +101,7 @@ public class MainActivity extends Activity {
         preTask = new PrePayTask();
         preTask.execute();
     }
+
     //请求参数的封装
     public String postString() {
         return Object2Json.map2Json(post());
@@ -98,15 +109,14 @@ public class MainActivity extends Activity {
 
     public HashMap<String, Object> post() {
         //请求参数 存到hashMap中
-
         myMap = new HashMap<>();
         myMap.put("amount", "1");
-        myMap.put("attach", "2");
+        myMap.put("attach", et_remark.getText().toString());
         myMap.put("coinId", "34190899187000");
         myMap.put("goodsTag", "coin");
         myMap.put("goodsType", "ETH");
         myMap.put("industry", "fubt");
-        myMap.put("refBizNo", "0000008" + num);
+        myMap.put("refBizNo", tv_number.getText().toString());
 
         mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -116,6 +126,7 @@ public class MainActivity extends Activity {
             HashMap<String, Object> bodyEncryptMap = DCPEncryptor.encrypt(mapper.writeValueAsString(myMap),
                     ProtocolConfigSeparate.mbr_public_key,
                     ProtocolConfigSeparate.private_key);
+            //设备信息
             device = new Device();
             device.deviceId = getAndroidId(this);
             device.appVersion = getVersionName(this);
@@ -226,6 +237,10 @@ public class MainActivity extends Activity {
 
 
     private void initViews() {
+        et_remark = findViewById(R.id.et_remark);
+        tv_number = findViewById(R.id.tv_number);
+        tv_number.setText("0000008" + num);
+
         button1 = findViewById(R.id.include1);
         //请求头部的封装
         mHeadMap = new HashMap<>();
