@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.zkp.walletdemo.R;
@@ -19,6 +21,8 @@ public class SelectCoinActivity extends AppCompatActivity {
 
     private ListView lv_coin;
     private List<Map<String, String>> list;
+    private Map<String, String> map;
+    private ImageView imageViewBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +32,20 @@ public class SelectCoinActivity extends AppCompatActivity {
         initData();
     }
 
+    private void initView() {
+        imageViewBack = findViewById(R.id.back);
+        lv_coin = findViewById(R.id.lv_coin);
+        imageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
     private void initData() {
         list = new ArrayList<>();
-        Map<String, String> map = new HashMap();
+        map = new HashMap();
         map.put("coin", "ETH");
         map.put("coinId", "34190899187000");
         list.add(map);
@@ -62,9 +77,5 @@ public class SelectCoinActivity extends AppCompatActivity {
             }
         };
         lv_coin.setAdapter(adapter);
-    }
-
-    private void initView() {
-        lv_coin = findViewById(R.id.lv_coin);
     }
 }

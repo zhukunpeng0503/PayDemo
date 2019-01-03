@@ -8,22 +8,28 @@
     android:orientation="vertical"
     tools:context=".ui.SelectCoinActivity">
 
-    <android.support.v7.widget.Toolbar
+    <RelativeLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:gravity="center">
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/back" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="币种选择"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
-    </android.support.v7.widget.Toolbar>
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/lv_coin"
