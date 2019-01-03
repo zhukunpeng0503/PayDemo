@@ -1,9 +1,7 @@
-package com.zkp.walletdemo;
+package com.zkp.walletdemo.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -26,8 +24,15 @@ import android.widget.Toast;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zkp.walletdemo.Device;
+import com.zkp.walletdemo.Encryptor;
+import com.zkp.walletdemo.Header;
+import com.zkp.walletdemo.Object2Json;
+import com.zkp.walletdemo.ProtocolConfigSeparate;
+import com.zkp.walletdemo.R;
 import com.zkp.walletdemo.platform.Base64Comp;
 import com.zkp.walletdemo.rsa.DCPEncryptor;
+import com.zkp.walletdemo.utils.AndroidUtils;
 import com.zkp.walletdemo.utils.OnLazyClickListener;
 import com.zkp.walletdemo.utils.network.NetResult;
 import com.zkp.walletdemo.utils.network.Post;
@@ -53,8 +58,8 @@ public class MainActivity extends Activity {
     protected Map<String, List<String>> mHeadMap;
 
     // 模拟应用后台返回签名好的订单信息（实际功能由你们的后台服务器实现）请求接口
-//    private static final String URL_PREPAY = "http://192.168.1.223:8101/dcpayCore/payBills/prepay";
-    private static final String URL_PREPAY = "http://47.52.175.22/dcpayCore/payBills/prepay";
+    private static final String URL_PREPAY = "http://192.168.1.223:8101/dcpayCore/payBills/prepay";
+    //    private static final String URL_PREPAY = "http://47.52.175.22/dcpayCore/payBills/prepay";
     private View button1;
     private String headerString;
     private HashMap<String, Object> bodyEncryptMap;
@@ -68,6 +73,9 @@ public class MainActivity extends Activity {
     private EditText et_remark;
     private TextView tv_number;
     private EditText et_amount;
+    private TextView tv_select;
+    private String coinId;
+    private String coin;
 
 
     @Override
@@ -78,24 +86,68 @@ public class MainActivity extends Activity {
         initListeners();
     }
 
+    private void initViews() {
+        et_remark = findViewById(R.id.et_remark);
+        tv_number = findViewById(R.id.tv_number);
+        tv_number.setText("0000008" + num);
+        et_amount = findViewById(R.id.et_amount);
+        tv_select = findViewById(R.id.tv_select);
+
+        button1 = findViewById(R.id.include1);
+        //请求头部的封装
+        mHeadMap = new HashMap<>();
+        mHeadMap.put("Accept", new ArrayList<String>(Arrays.asList("application/json")));
+        mHeadMap.put("Content-Type", new ArrayList<String>(Arrays.asList("application/json")));
+    }
+
+
     private void initListeners() {
+        tv_select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(MainActivity.this, SelectCoinActivity.class), 2);
+            }
+        });
+
+
         button1.setOnClickListener(new OnLazyClickListener() {
             @Override
             public void onLazyClick(View view) {
                 num = (int) (Math.random() * 8998) + 1000 + 1;
+                if (TextUtils.isEmpty(tv_select.getText().toString().trim())) {
+                    Toast.makeText(MainActivity.this, "请选择币种!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (TextUtils.isEmpty(et_amount.getText().toString())) {
                     Toast.makeText(MainActivity.this, "请输入数量!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(et_remark.getText().toString())) {
-                    Toast.makeText(MainActivity.this, "请添加备注", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "请添加备注!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 pay(); // 开始支付
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {
+            return;
+        } else {
+            if (requestCode == 2 && resultCode == 3) {
+                coinId = data.getStringExtra("coinId");
+                coin = data.getStringExtra("coin");
+
+                tv_select.setText(coin);
+                Log.i("tag", coinId);
+            }
+        }
     }
 
     private PrePayTask preTask;
@@ -116,10 +168,11 @@ public class MainActivity extends Activity {
 
     public HashMap<String, Object> post() {
         //请求参数 存到hashMap中
+        Log.i("coinid", coinId);
         myMap = new HashMap<>();
         myMap.put("amount", et_amount.getText().toString());
         myMap.put("attach", et_remark.getText().toString());
-        myMap.put("coinId", "34190899187000");
+        myMap.put("coinId", coinId);
         myMap.put("goodsTag", "coin");
         myMap.put("goodsType", "ETH");
         myMap.put("industry", "fubt");
@@ -135,12 +188,12 @@ public class MainActivity extends Activity {
                     ProtocolConfigSeparate.private_key);
             //设备信息
             device = new Device();
-            device.deviceId = getAndroidId(this);
-            device.appVersion = getVersionName(this);
+            device.deviceId = AndroidUtils.getAndroidId(this);
+            device.appVersion = AndroidUtils.getVersionName(this);
             device.pushId = "213231";
             device.system = "Android";
             device.language = "zh_cn";
-            device.packageName = getPackageName(this);
+            device.packageName = AndroidUtils.getPackageName(this);
             device.channel = ProtocolConfigSeparate.channel;
             // 头部header 参数赋值
             Header header = new Header();
@@ -243,19 +296,6 @@ public class MainActivity extends Activity {
     }
 
 
-    private void initViews() {
-        et_remark = findViewById(R.id.et_remark);
-        tv_number = findViewById(R.id.tv_number);
-        tv_number.setText("0000008" + num);
-        et_amount = findViewById(R.id.et_amount);
-
-        button1 = findViewById(R.id.include1);
-        //请求头部的封装
-        mHeadMap = new HashMap<>();
-        mHeadMap.put("Accept", new ArrayList<String>(Arrays.asList("application/json")));
-        mHeadMap.put("Content-Type", new ArrayList<String>(Arrays.asList("application/json")));
-    }
-
     private Dialog progressDialog;
 
     private void showProgress() {
@@ -291,48 +331,6 @@ public class MainActivity extends Activity {
         }
     }
 
-
-    /**
-     * 获取android ID
-     *
-     * @see
-     */
-    public static String getAndroidId(Context context) {
-        try {
-            return Settings.Secure.getString(context.getContentResolver(),
-                    Settings.Secure.ANDROID_ID);
-        } catch (Exception e) {
-
-            return null;
-        }
-    }
-
-
-    /**
-     * get VersionName of this App
-     */
-    public static String getVersionName(Context context) {
-        try {
-            PackageManager manager = context.getPackageManager();
-            PackageInfo info = manager.getPackageInfo(
-                    context.getPackageName(), PackageManager.GET_CONFIGURATIONS);
-            return info.versionName;
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
-    /**
-     * 获取包名
-     */
-    public static String getPackageName(Context context) {
-        try {
-            return context.getPackageName();
-        } catch (Exception e) {
-
-            return null;
-        }
-    }
 }
 
 

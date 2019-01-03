@@ -7,16 +7,21 @@
     android:background="#eeeeee"
     android:clipToPadding="false"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
-    <TextView
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:text="@string/app_name"
-        android:textColor="#333333"
-        android:textSize="18sp" />
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </android.support.v7.widget.Toolbar>
 
 
     <TextView
@@ -42,17 +47,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
+        android:text="币种选择:"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_select"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/item_shape"
+        android:drawableRight="@mipmap/right_arrows"
+        android:gravity="center_vertical"
+        android:hint="请选择币种"
+        android:paddingLeft="10dp"
+        android:paddingRight="15dp"
+        android:textColor="#666666"
+        android:textColorHint="#999999"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
         android:text="数量:"
         android:textSize="14sp" />
 
     <EditText
-        android:inputType="number"
         android:id="@+id/et_amount"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_margin="15dp"
         android:background="@drawable/item_shape"
         android:hint="请输入数量"
+        android:inputType="number"
         android:paddingLeft="5dp"
         android:textColor="#666666"
         android:textColorHint="#999999"

@@ -4,7 +4,7 @@ import android.util.Log;
 import android.util.SparseArray;
 
 
-import com.zkp.walletdemo.MainActivity;
+import com.zkp.walletdemo.ui.MainActivity;
 
 import java.util.HashSet;
 import java.util.Iterator;

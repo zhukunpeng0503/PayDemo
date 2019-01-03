@@ -4,7 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 
-import com.zkp.walletdemo.MainActivity;
+import com.zkp.walletdemo.ui.MainActivity;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
